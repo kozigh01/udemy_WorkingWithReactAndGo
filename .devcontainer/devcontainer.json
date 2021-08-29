@@ -36,7 +36,7 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"golang.Go",
+		"golang.go",
 		"dbaeumer.vscode-eslint",
 		"mtxr.sqltools",
 		"mtxr.sqltools-driver-pg",
