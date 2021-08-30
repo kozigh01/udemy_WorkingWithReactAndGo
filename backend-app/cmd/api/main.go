@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 const (
@@ -23,12 +24,23 @@ type AppStatus struct {
 	Version     string `json:"version"`
 }
 
+type Application struct {
+	config config
+	logger *log.Logger
+}
+
 func main() {
 	var cfg config
 
 	flag.IntVar(&cfg.port, "port", 4000, "Server port to listen on")
 	flag.StringVar(&cfg.env, "env", "development", "Application environment (development|production)")
 	flag.Parse()
+
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	app := Application {
+		config: cfg,
+		logger: logger,
+	}
 
 	fmt.Printf("Running: port=%v, env=%q\n", cfg.port, cfg.env)
 
