@@ -1,11 +1,9 @@
 package main
 
 import (
-	"backend/models"
 	"errors"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -20,27 +18,53 @@ func (app *application) getOneMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.logger.Println("id is", id)
-
-	movie := models.Movie{
-		ID:          id,
-		Title:       "Movie 01",
-		Description: "Desc 01",
-		Year:        2021,
-		ReleaseDate: time.Date(2021, 01, 02, 03, 04, 05, 06, time.Local),
-		Runtime:     100,
-		Rating:      5,
-		MPAARating:  "PG-13",
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
+	movie, err := app.models.DB.Get(id)
+	if err != nil {
+		app.logger.Print(errors.New("invalid id parameter"))
+		app.errorJSON(w, err)
+		return		
 	}
 
 	err = app.writeJSON(w, http.StatusOK, movie, "movie")
 	if err != nil {
+		app.errorJSON(w, err)
 		return
 	}
 }
 
 func (app *application) getAllMovies(w http.ResponseWriter, r *http.Request) {
+	movies, err := app.models.DB.All()
+	if err != nil {
+		app.logger.Print(errors.New("failed to get all movies"))
+		app.errorJSON(w, err)
+		return
+	}
 
+	err = app.writeJSON(w, http.StatusOK, movies, "movies")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+}
+
+func (app *application) deleteMovie(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	id, err := strconv.Atoi(params.ByName("id"))
+	if err != nil {
+		app.logger.Print(errors.New("invalid id parameter"))
+	}
+
+	app.logger.Println("id is ", id)
+}
+
+func (app *application) insertMovie(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *application) updateMovie(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *application) searchMovies(w http.ResponseWriter, r *http.Request) {
+	
 }
