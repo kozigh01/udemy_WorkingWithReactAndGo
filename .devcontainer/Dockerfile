@@ -10,7 +10,8 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends ca-certificates
+    && apt-get -y install --no-cache ca-certificates \
+    && update-ca-certificates 2>/dev/null || true
 
 # [Optional] Uncomment the next line to use go get to install anything else you need
 # RUN go get -x <your-dependency-or-tool>

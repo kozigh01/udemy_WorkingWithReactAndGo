@@ -6,6 +6,12 @@ Author: [Trevor Sawler](https://www.udemy.com/user/trevor-sawler/)
 ## Resources
 * Go
   * httprouter: [github](https://github.com/julienschmidt/httprouter)
+* Netskope
+  ```
+  # at terminal not within the container
+  $ sudo launchctl unload /Library/LaunchDaemons/com.netskope.client.auxsvc.plist
+  $ sudo ps aux | grep Netskope | grep -v grep | awk '{ print "kill -9", $2 }' | sudo sh
+  ```
 
 ## Postgres
 * pgAdmin: [local](http://localhost:5050/browser/#)  
